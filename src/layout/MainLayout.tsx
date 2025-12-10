@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
-import Header from "../components/Header";
+import AppHeader from "../components/AppHeader";
 
 const MainLayout = () => {
   return (
-    <div className="flex flex-col min-h-screen container mx-auto">
-      <Header />
-      <main className="flex flex-col flex-1">
+    <div className="flex flex-col min-h-screen">
+      <AppHeader />
+      <main className="flex flex-col flex-1 container mx-auto">
         <Outlet />
       </main>
     </div>
