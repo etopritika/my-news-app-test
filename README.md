@@ -1,73 +1,103 @@
-# React + TypeScript + Vite
+# My News App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple news viewer application built for a technical assignment. This app allows users to browse top headlines from around the world, filter news by category, search by keyword, and view detailed article information in a modal dialog.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Category Filtering** - Browse news by predefined categories (business, technology, sports, etc.)
+- **Keyword Search** - Search for specific topics across all news articles
+- **News Details Dialog** - View full article details in a modal without leaving the main page
+- **Responsive Layout** - Works seamlessly across desktop and mobile devices
+- **Fallback Image Handling** - Graceful handling of missing article images
+- **Loading & Error States** - Proper feedback during data fetching and error scenarios
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **React** (Vite) - Modern React with fast HMR
+- **TypeScript** - Type-safe development
+- **TanStack Query** - Server state management and data fetching
+- **shadcn/ui** - High-quality, accessible UI components
+- **Tailwind CSS** - Utility-first CSS framework
+- **Context API** - Client-side state management for filters and UI state
+- **React Router** - Client-side routing
 
-## Expanding the ESLint configuration
+## Project Structure
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+src/
+├── components/        # Reusable UI components
+│   ├── ui/           # shadcn/ui components
+│   └── ...
+├── context/          # React Context providers
+│   ├── news-filters/ # Search and category filter state
+│   └── news-details/ # Modal dialog state
+├── hooks/            # Custom React hooks
+├── pages/            # Page components
+├── api/              # API client and fetch functions
+├── lib/              # Utility functions
+├── types/            # TypeScript type definitions
+└── constants/        # App constants
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Setup Instructions
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. Install dependencies:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
+
+2. Create a `.env` file in the root directory:
+
+```env
+VITE_API_KEY=your_newsapi_key_here
+```
+
+Get your API key from [NewsAPI.org](https://newsapi.org/).
+
+3. Start the development server:
+
+```bash
+npm run dev
+```
+
+4. Build for production:
+
+```bash
+npm run build
+```
+
+## Environment Variables
+
+The application requires the following environment variable:
+
+- `VITE_API_KEY` - Your NewsAPI.org API key for fetching news data
+
+Create a `.env` file in the project root and add your API key:
+
+```env
+VITE_API_KEY=your_newsapi_key_here
+```
+
+## Architecture Notes
+
+The application follows a clean separation of concerns:
+
+- **Home Page** - Acts as a declarative container that orchestrates UI components
+- **Context Providers** - Encapsulate business logic and state management (filters, dialog state)
+- **TanStack Query** - Handles all server-state, caching, and data synchronization
+- **UI Components** - Remain stateless and reusable, receiving data via props
+
+This architecture ensures maintainability, testability, and clear data flow throughout the application.
+
+## Why Modal Instead of Dedicated Route?
+
+The news details are displayed in a modal dialog rather than a dedicated route for several reasons:
+
+- **Simpler UX** - Users can quickly preview articles without losing their place in the news list
+- **Test Requirements** - Matches the technical assignment specifications
+- **API Limitations** - NewsAPI doesn't provide stable article IDs, making deep linking to individual articles unreliable and prone to stale data issues
+
+## License
+
+MIT
