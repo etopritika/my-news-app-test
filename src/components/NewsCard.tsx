@@ -1,31 +1,35 @@
-import { useNavigate } from "react-router-dom";
 import type { Article } from "../types/news";
 import { Card, CardHeader, CardContent, CardFooter } from "./ui/card";
 import { Button } from "./ui/button";
-import { formatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/formatDate";
+import { useNewsDetails } from "../context/news-details";
+import { ImageOff } from "lucide-react";
 
 type NewsCardProps = {
   article: Article;
 };
 
 const NewsCard = ({ article }: NewsCardProps) => {
-  const navigate = useNavigate();
+  const { openDialog } = useNewsDetails();
 
   const handleClick = () => {
-    const encodedTitle = encodeURIComponent(article.title);
-    navigate(`/news/${encodedTitle}`);
+    openDialog(article);
   };
 
   return (
     <article className="flex h-full">
       <Card className="flex flex-col flex-1 hover:shadow-md transition-shadow pt-0">
-        {article.urlToImage && (
+        {article.urlToImage ? (
           <div className="w-full h-48 overflow-hidden rounded-t-xl">
             <img
               src={article.urlToImage}
               alt={article.title}
               className="w-full h-full object-cover"
             />
+          </div>
+        ) : (
+          <div className="w-full h-48 flex items-center justify-center bg-muted rounded-t-xl">
+            <ImageOff className="w-10 h-10 text-muted-foreground" />
           </div>
         )}
         <CardHeader>
@@ -38,8 +42,8 @@ const NewsCard = ({ article }: NewsCardProps) => {
             </p>
           )}
         </CardHeader>
-        <div className="flex flex-col flex-1 gap-2">
-          <CardContent className="flex-1">
+        <div className="flex flex-col mt-auto gap-2">
+          <CardContent>
             <time
               dateTime={formatDate(article.publishedAt).iso}
               className="text-xs text-muted-foreground"

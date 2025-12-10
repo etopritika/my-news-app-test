@@ -23,8 +23,3 @@ export const fetchNews = async (
 
   return response.data;
 };
-
-export const fetchNewsById = async (id: string) => {
-  void id;
-  return null;
-};
